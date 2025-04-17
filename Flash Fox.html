@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Fox - The Speed King of Nature</title>
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --dark: #292F36;
+            --light: #F7FFF7;
+            --accent: #FFE66D;
+            --lightning-color: rgba(255, 230, 109, 0.8);
+            --btc-color: #F7931A;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        /* 闪电背景容器 */
+        .lightning-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(41,47,54,0.9) 0%, #1a1a1a 100%);
+        }
+        
+        /* 3D比特币硬币效果 */
+        .btc-coin {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #F8B357, #F7931A 70%);
+            box-shadow: 
+                0 0 15px rgba(247, 147, 26, 0.6),
+                inset -5px -5px 10px rgba(0,0,0,0.3),
+                inset 3px 3px 5px rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            animation: float 15s infinite linear;
+            opacity: 0.8;
+            transform-style: preserve-3d;
+        }
+        
+        .btc-coin::before {
+            content: "₿";
+            font-size: 30px;
+        }
+        
+        .btc-coin::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 70% 70%, rgba(255,255,255,0.8), rgba(255,255,255,0) 70%);
+            opacity: 0.4;
+        }
+        
+        /* 更醒目的闪电效果 */
+        .lightning {
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, 
+                transparent, 
+                var(--lightning-color) 20%, 
+                white 40%, 
+                var(--lightning-color) 60%, 
+                transparent);
+            transform-origin: top center;
+            animation: lightning-strike 5s infinite;
+            opacity: 0;
+            filter: drop-shadow(0 0 10px var(--accent));
+            z-index: 1;
+        }
+        
+        /* 闪电爆发效果 */
+        .lightning-burst {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--lightning-color) 0%, transparent 70%);
+            opacity: 0;
+            animation: lightning-flash 8s infinite;
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+        
+        /* 动画效果 */
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -20px) rotate(5deg); }
+            50% { transform: translate(40px, 0) rotate(0deg); }
+            75% { transform: translate(20px, 20px) rotate(-5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        
+        @keyframes lightning-strike {
+            0% { transform: scaleY(0); opacity: 0; }
+            1% { transform: scaleY(0.1); opacity: 0.8; }
+            2% { transform: scaleY(1); opacity: 0.9; }
+            3% { transform: scaleY(0.8); opacity: 1; }
+            4% { transform: scaleY(1); opacity: 0.8; }
+            5% { transform: scaleY(1); opacity: 0; }
+            100% { transform: scaleY(1); opacity: 0; }
+        }
+        
+        @keyframes lightning-flash {
+            0% { transform: scale(0.1); opacity: 0; }
+            1% { transform: scale(1); opacity: 0.8; }
+            2% { transform: scale(1.2); opacity: 0; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+
+        /* 英雄区域 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(78,205,196,0.1) 0%, rgba(41,47,54,0.8) 70%);
+            z-index: -1;
+        }
+        
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255,107,107,0.3);
+            animation: glow 2s infinite alternate;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .cta-button {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #1DA1F2, #1A91DA);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .buy-button {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--accent), #FFA500);
+            border: none;
+            border-radius: 50px;
+            color: var(--dark);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .cta-button:hover, .buy-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+        }
+        
+        .cta-button::after, .buy-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .cta-button:hover::after, .buy-button:hover::after {
+            left: 100%;
+        }
+        
+        .fox-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+        }
+        
+        .fox {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('huli.png') no-repeat center;
+            background-size: contain;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255,107,107,0.5));
+        }
+        
+        .fox-lightning {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 L60,40 L80,40 L55,70 L75,90 L40,60 L20,60 L50,10 Z" fill="%23FFE66D" opacity="0.7"/></svg>') no-repeat center;
+            background-size: 50%;
+            animation: flash 4s infinite, rotate 15s linear infinite;
+            opacity: 0;
+        }
+        
+        section {
+            padding: 100px 20px;
+            position: relative;
+        }
+        
+        .features {
+            background-color: var(--light);
+            color: var(--dark);
+            clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+            padding: 150px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 5px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .feature-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .gallery {
+            text-align: center;
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 60px;
+        }
+        
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            height: 250px;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(41,47,54,0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
+            margin-top: -1px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px) rotate(10deg);
+            background-color: var(--accent);
+            color: var(--dark);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes flash {
+            0% { opacity: 0; }
+            10% { opacity: 0.8; }
+            15% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255,107,107,0.5); }
+            to { text-shadow: 0 0 20px rgba(255,107,107,0.8), 0 0 30px rgba(255,230,109,0.6); }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .fox-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 闪电和BTC背景容器 -->
+    <div class="lightning-bg" id="lightningBg"></div>
+    
+    <div class="hero">
+        <h1>Flash Fox</h1>
+        <p>The most mysterious and fastest creature in nature, with lightning speed and charming appearance</p>
+        <div class="fox-container">
+            <div class="fox"></div>
+            <div class="fox-lightning"></div>
+        </div>
+        <div class="button-group">
+            <a href="https://x.com/Flash_Fox__" class="cta-button" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Follow Me
+            </a>
+            <a href="https://odin.fun/" class="buy-button" target="_blank">BUY</a>
+        </div>
+    </div>
+    
+    <section class="features">
+        <div class="container">
+            <h2>Unique Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Lightning Speed</h3>
+                    <p>The running speed of the Lightning Fox can reach 300 kilometers per hour, and it is one of the fastest creatures on land. Just like Odin.Fun, its speed is the fastest way to trade Bitcoin tokens.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Electromagnetic Sensing</h3>
+                    <p>With specialized electromagnetic sensing organs, the Lightning Fox can detect environmental EM changes and even predict approaching thunderstorms.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Bioluminescent Fur</h3>
+                    <p>At night or when excited, the fox's fur emits a soft blue glow caused by special fluorescent proteins in its coat.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Social Behavior</h3>
+                    <p>Highly social animals, Lightning Foxes communicate through complex EM pulses and body language, forming tight family groups.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Specialized Diet</h3>
+                    <p>They mainly feed on batteries, which helps maintain the electromagnetic balance inside them. </p>
+                </div>
+                <div class="feature-card">
+                    <h3>Reproductive Cycle</h3>
+                    <p>Thunderstorm season marks their mating period. Kits are born with weak EM fields and require communal care to thrive.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="gallery">
+        <div class="container">
+            <h2>Flash Fox Gallery</h2>
+            <div class="image-grid">
+                <div class="gallery-item">
+                    <img src="huli1.png" alt="Lightning Fox in a storm">
+                </div>
+                <div class="gallery-item">
+                    <img src="huli2.png" alt="Lightning Fox in the forest">
+                </div>
+                <div class="gallery-item">
+                    <img src="huli3.png" alt="Glowing Lightning Fox">
+                </div>
+                <div class="gallery-item">
+                    <img src="huli4.png" alt="Running Lightning Fox">
+                </div>
+                <div class="gallery-item">
+                    <img src="huli5.png" alt="Lightning Fox family">
+                </div>
+                <div class="gallery-item">
+                    <img src="huli6.png" alt="Lightning Fox at night">
+                </div>
+                <div class="gallery-item">
+                    <img src="huli7.png" alt="Lightning Fox at night">
+                </div>
+                <div class="gallery-item">
+                    <img src="huli8.png" alt="Lightning Fox at night">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <h2>Join the Flash Fox Conservation</h2>
+        <p>Help protect this amazing creature and its habitat for future generations</p>
+        <div class="social-links">
+            <div class="social-link">🐾</div>
+            <div class="social-link">⚡</div>
+            <div class="social-link">🌩️</div>
+            <div class="social-link">🦊</div>
+            <div class="social-link">🌎</div>
+        </div>
+        <p style="margin-top: 30px;">© Lightning Fox Conservation | All rights reserved</p>
+    </footer>
+    
+    <script>
+        // 创建闪电和BTC背景元素
+        function createLightningBackground() {
+            const container = document.getElementById('lightningBg');
+            
+            // 创建3D比特币硬币
+            for (let i = 0; i < 20; i++) {
+                const btc = document.createElement('div');
+                btc.className = 'btc-coin';
+                btc.style.left = `${Math.random() * 100}%`;
+                btc.style.top = `${Math.random() * 100}%`;
+                btc.style.width = `${40 + Math.random() * 50}px`;
+                btc.style.height = btc.style.width;
+                btc.style.animationDuration = `${15 + Math.random() * 30}s`;
+                btc.style.animationDelay = `${Math.random() * 10}s`;
+                container.appendChild(btc);
+            }
+            
+            // 创建更醒目的闪电线条
+            for (let i = 0; i < 25; i++) {
+                const lightning = document.createElement('div');
+                lightning.className = 'lightning';
+                lightning.style.left = `${Math.random() * 100}%`;
+                lightning.style.top = `${Math.random() * 30}%`;
+                lightning.style.height = `${200 + Math.random() * 400}px`;
+                lightning.style.animationDelay = `${Math.random() * 5}s`;
+                lightning.style.animationDuration = `${3 + Math.random() * 7}s`;
+                container.appendChild(lightning);
+            }
+            
+            // 创建闪电爆发效果
+            for (let i = 0; i < 15; i++) {
+                const burst = document.createElement('div');
+                burst.className = 'lightning-burst';
+                burst.style.left = `${Math.random() * 100}%`;
+                burst.style.top = `${Math.random() * 100}%`;
+                burst.style.animationDelay = `${Math.random() * 10}s`;
+                burst.style.width = `${150 + Math.random() * 250}px`;
+                burst.style.height = burst.style.width;
+                container.appendChild(burst);
+            }
+        }
+        
+        // 强烈闪电效果
+        function triggerIntenseLightning() {
+            const container = document.getElementById('lightningBg');
+            
+            // 创建3-5道强烈闪电
+            const count = 3 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < count; i++) {
+                const intenseLightning = document.createElement('div');
+                intenseLightning.className = 'lightning';
+                intenseLightning.style.left = `${10 + Math.random() * 80}%`;
+                intenseLightning.style.top = '0%';
+                intenseLightning.style.height = '100vh';
+                intenseLightning.style.width = '6px';
+                intenseLightning.style.opacity = '0';
+                intenseLightning.style.animation = 'none';
+                
+                container.appendChild(intenseLightning);
+                
+                // 动画序列 - 更强烈的闪烁
+                setTimeout(() => {
+                    intenseLightning.style.opacity = '1';
+                    intenseLightning.style.transition = 'opacity 0.05s';
+                }, i * 100);
+                
+                setTimeout(() => {
+                    intenseLightning.style.opacity = '0.3';
+                }, i * 100 + 50);
+                
+                setTimeout(() => {
+                    intenseLightning.style.opacity = '0.9';
+                }, i * 100 + 100);
+                
+                setTimeout(() => {
+                    intenseLightning.style.opacity = '0.2';
+                }, i * 100 + 150);
+                
+                setTimeout(() => {
+                    intenseLightning.style.opacity = '0';
+                    setTimeout(() => intenseLightning.remove(), 1000);
+                }, i * 100 + 200);
+            }
+            
+            // 随机间隔后再次触发
+            setTimeout(triggerIntenseLightning, 3000 + Math.random() * 5000);
+        }
+        
+        // 页面加载时初始化
+        window.addEventListener('load', function() {
+            createLightningBackground();
+            setTimeout(triggerIntenseLightning, 1000);
+            
+            // 检查图片是否存在，不存在则显示占位符
+            const images = document.querySelectorAll('.gallery-item img');
+            images.forEach((img, index) => {
+                const imgSrc = img.getAttribute('src');
+                const testImg = new Image();
+                testImg.onerror = () => {
+                    img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"><rect width="100%" height="100%" fill="%23eee"/><text x="50%" y="50%" fill="%23aaa" font-family="Arial" font-size="20" text-anchor="middle" dominant-baseline="middle">hulii.png' + (index+1) + '</text></svg>';
+                };
+                testImg.src = imgSrc;
+            });
+
+            // 检查狐狸图片
+            const foxImg = document.querySelector('.fox');
+            const testFoxImg = new Image();
+            testFoxImg.onerror = () => {
+                foxImg.style.backgroundImage = 'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M100,50 Q130,30 160,50 Q180,80 160,110 Q140,130 100,130 Q60,130 40,110 Q20,80 40,50 Q70,30 100,50 Z" fill="%23FF6B6B"/><circle cx="80" cy="80" r="10" fill="white"/><circle cx="120" cy="80" r="10" fill="white"/><circle cx="80" cy="80" r="5" fill="%23292F36"/><circle cx="120" cy="80" r="5" fill="%23292F36"/><path d="M90,110 Q100,120 110,110" stroke="%23292F36" stroke-width="3" fill="none"/><path d="M70,40 L60,20" stroke="%23FF6B6B" stroke-width="8" fill="none"/><path d="M130,40 L140,20" stroke="%23FF6B6B" stroke-width="8" fill="none"/><path d="M100,130 L100,160 L80,180" stroke="%23FF6B6B" stroke-width="8" fill="none"/><path d="M100,160 L120,180" stroke="%23FF6B6B" stroke-width="8" fill="none"/></svg>\')';
+            };
+            testFoxImg.src = 'huli.png';
+            
+            // 狐狸周围的闪电效果
+            setInterval(function() {
+                const lightning = document.querySelector('.fox-lightning');
+                lightning.style.opacity = '0.8';
+                setTimeout(() => {
+                    lightning.style.opacity = '0';
+                }, 100);
+            }, 4000);
+        });
+        
+        // 视差效果
+        window.addEventListener('scroll', function() {
+            const fox = document.querySelector('.fox');
+            const scrollPosition = window.pageYOffset;
+            fox.style.transform = `translateY(${scrollPosition * 0.2}px) rotate(${scrollPosition * 0.1}deg)`;
+        });
+    </script>
+</body>
+</html>
